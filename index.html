@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoiceRead — Text-to-Speech Studio</title>
+  <meta name="description" content="VoiceRead es un reproductor de Text-to-Speech divertido con Totoro. Convierte cualquier texto en voz con controles avanzados y una experiencia mágica.">
+  <meta name="theme-color" content="#58cc02">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="VoiceRead — Text-to-Speech Studio">
+  <meta property="og:description" content="Convierte cualquier texto en voz con Totoro como tu guía de lectura.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍃</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Incompatible browser overlay -->
+  <div id="unsupported-overlay" class="unsupported-overlay" role="alert" hidden>
+    <div class="unsupported-card">
+      <img src="img/totoro-confused.png" alt="Totoro confundido" class="unsupported-img" width="160" height="160">
+      <h2>¡Oh no! Navegador no compatible</h2>
+      <p>Tu navegador no soporta la síntesis de voz. Usa una versión reciente de Chrome, Edge o Safari para que Totoro pueda leerte.</p>
+    </div>
+  </div>
+
+  <div class="app-container" id="app">
+
+    <!-- Decorative leaves -->
+    <div class="deco-leaf deco-leaf-1" aria-hidden="true">🍃</div>
+    <div class="deco-leaf deco-leaf-2" aria-hidden="true">🌿</div>
+    <div class="deco-leaf deco-leaf-3" aria-hidden="true">🍃</div>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="brand-icon" aria-hidden="true">🍃</div>
+        <div class="brand-text">
+          <h1 class="brand-name">VoiceRead</h1>
+          <span class="brand-tagline">Tu amigo lector ✨</span>
+        </div>
+      </div>
+      <div class="header-status" id="headerStatus">
+        <span class="status-dot" id="statusDot" aria-hidden="true"></span>
+        <span class="status-label" id="statusLabel">Listo</span>
+      </div>
+    </header>
+
+    <!-- Mascot Area -->
+    <div class="mascot-area" id="mascotArea">
+      <div class="mascot-container">
+        <img src="img/totoro-sleeping.png" alt="Totoro esperando" class="mascot-img" id="mascotImg" width="180" height="180">
+        <div class="speech-bubble" id="speechBubble">
+          <p id="bubbleText">¡Escribe algo y presiona play para que te lo lea! 📖</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="app-main">
+
+      <!-- Text Input Section -->
+      <section class="card card-input" aria-label="Entrada de texto">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span class="card-icon" aria-hidden="true">✏️</span>
+            Escribe tu texto
+          </h2>
+          <button type="button" class="btn-pill btn-clear" id="btnClear" title="Limpiar texto" aria-label="Limpiar texto">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            Limpiar
+          </button>
+        </div>
+        <div class="textarea-wrapper">
+          <textarea
+            id="textInput"
+            class="text-input"
+            placeholder="¡Pega o escribe aquí lo que quieras escuchar! Totoro te lo leerá 🎙️"
+            maxlength="5000"
+            aria-label="Texto para convertir en voz"
+            spellcheck="true"
+          ></textarea>
+        </div>
+        <div class="card-footer">
+          <div class="text-stats" id="textStats">
+            <span class="stat-chip" id="statChars">0 caracteres</span>
+            <span class="stat-chip" id="statWords">0 palabras</span>
+            <span class="stat-chip" id="statTime">~0 min</span>
+          </div>
+          <div class="char-counter" id="charCounter">
+            <div class="counter-bar">
+              <div class="counter-fill" id="counterFill"></div>
+            </div>
+            <span class="counter-text"><span id="charCount">0</span> / 5000</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Synchronized Text Display -->
+      <section class="card card-display" aria-label="Texto sincronizado" id="displaySection">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span class="card-icon" aria-hidden="true">📖</span>
+            Lectura
+          </h2>
+          <span class="badge badge-reading" id="readingBadge" hidden>🔊 Leyendo</span>
+        </div>
+        <div class="display-panel" id="displayPanel" role="region" aria-live="polite" aria-label="Texto siendo leído">
+          <p class="display-placeholder" id="displayPlaceholder">El texto aparecerá aquí mientras Totoro lo lee 🍃</p>
+          <div class="display-text" id="displayText" hidden></div>
+        </div>
+      </section>
+
+      <!-- Player Controls -->
+      <section class="card card-player" aria-label="Controles de reproducción">
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress-labels">
+            <span class="progress-percent" id="progressPercent">0%</span>
+            <span class="progress-position" id="progressPosition">—</span>
+          </div>
+          <div
+            class="progress-bar"
+            id="progressBar"
+            role="slider"
+            aria-label="Progreso de lectura"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            tabindex="0"
+          >
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+              <div class="progress-handle" id="progressHandle">
+                <span class="handle-emoji" aria-hidden="true">🍃</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transport Controls -->
+        <div class="transport-controls">
+          <button type="button" class="btn-round btn-secondary btn-restart" id="btnRestart" title="Reiniciar (R)" aria-label="Reiniciar lectura" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10"/>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+            </svg>
+          </button>
+
+          <button type="button" class="btn-round btn-secondary btn-skip-back" id="btnSkipBack" title="Retroceder 10%" aria-label="Retroceder" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="19 20 9 12 19 4 19 20"/>
+              <line x1="5" y1="19" x2="5" y2="5"/>
+            </svg>
+          </button>
+
+          <button type="button" class="btn-round btn-primary btn-play-pause" id="btnPlayPause" title="Reproducir (Space)" aria-label="Reproducir">
+            <svg class="icon-play" id="iconPlay" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="6,3 20,12 6,21"/>
+            </svg>
+            <svg class="icon-pause" id="iconPause" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" hidden>
+              <rect x="5" y="3" width="4" height="18" rx="1"/>
+              <rect x="15" y="3" width="4" height="18" rx="1"/>
+            </svg>
+          </button>
+
+          <button type="button" class="btn-round btn-secondary btn-skip-forward" id="btnSkipForward" title="Avanzar 10%" aria-label="Avanzar" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 4 15 12 5 20 5 4"/>
+              <line x1="19" y1="5" x2="19" y2="19"/>
+            </svg>
+          </button>
+
+          <button type="button" class="btn-round btn-danger btn-stop" id="btnStop" title="Detener (Esc)" aria-label="Detener lectura" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="6" width="12" height="12" rx="2"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Keyboard Shortcuts -->
+        <div class="shortcuts-hint" aria-label="Atajos de teclado">
+          <span class="shortcut"><kbd>Space</kbd> Play/Pause</span>
+          <span class="shortcut"><kbd>Esc</kbd> Stop</span>
+          <span class="shortcut"><kbd>R</kbd> Reiniciar</span>
+        </div>
+      </section>
+
+      <!-- Settings Section -->
+      <section class="card card-settings" aria-label="Configuración">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span class="card-icon" aria-hidden="true">⚙️</span>
+            Configuración
+          </h2>
+        </div>
+
+        <div class="settings-grid">
+
+          <!-- Voice Selector -->
+          <div class="setting-group">
+            <label class="setting-label" for="voiceSelect">🎤 Voz</label>
+            <div class="select-wrapper">
+              <select id="voiceSelect" class="voice-select" aria-label="Seleccionar voz">
+                <option value="">Cargando voces...</option>
+              </select>
+              <div class="select-chevron" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+            </div>
+            <p class="setting-hint" id="voiceHint"></p>
+          </div>
+
+          <!-- Rate Slider -->
+          <div class="setting-group">
+            <div class="setting-label-row">
+              <label class="setting-label" for="rateSlider">🚀 Velocidad</label>
+              <span class="setting-value" id="rateValue">1.0x</span>
+            </div>
+            <input
+              type="range"
+              id="rateSlider"
+              class="slider slider-green"
+              min="0.5"
+              max="2.0"
+              step="0.1"
+              value="1.0"
+              aria-label="Velocidad de lectura"
+              aria-valuemin="0.5"
+              aria-valuemax="2.0"
+              aria-valuenow="1.0"
+            >
+            <div class="slider-labels" aria-hidden="true">
+              <span>🐌 0.5x</span>
+              <span>🐇 2.0x</span>
+            </div>
+          </div>
+
+          <!-- Pitch Slider -->
+          <div class="setting-group">
+            <div class="setting-label-row">
+              <label class="setting-label" for="pitchSlider">🎵 Tono</label>
+              <span class="setting-value" id="pitchValue">1.0</span>
+            </div>
+            <input
+              type="range"
+              id="pitchSlider"
+              class="slider slider-blue"
+              min="0.5"
+              max="2.0"
+              step="0.1"
+              value="1.0"
+              aria-label="Tono de la voz"
+              aria-valuemin="0.5"
+              aria-valuemax="2.0"
+              aria-valuenow="1.0"
+            >
+            <div class="slider-labels" aria-hidden="true">
+              <span>Grave</span>
+              <span>Agudo</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>VoiceRead 🍃 Powered by Web Speech API</p>
+      <button type="button" class="btn-text" id="btnClearStorage" title="Borrar preferencias guardadas" aria-label="Borrar preferencias guardadas">Borrar datos guardados</button>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+      <span class="toast-icon" aria-hidden="true">🍃</span>
+      <span class="toast-message" id="toastMessage"></span>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
