@@ -91,7 +91,10 @@
             <p class="cover-subtitle">Para mi lectora favorita</p>
             <span class="cover-ornament-bottom">✦ ✦ ✦</span>
           </div>
-          <span class="tap-hint">toca para abrir →</span>
+          <div class="open-book-btn">
+            <span class="pulse-ring"></span>
+            Clic aquí para abrir el libro <span class="arrow">→</span>
+          </div>
         </div>
         <div class="page-back cover-back">
           <div class="page-content">
@@ -458,6 +461,14 @@
       </button>
     </div>
 
+    <!-- Mobile Navigation Tap Zones -->
+    <div class="tap-zone tap-zone-left" id="tapZoneLeft" aria-label="Página anterior">
+      <div class="tap-icon">←</div>
+    </div>
+    <div class="tap-zone tap-zone-right" id="tapZoneRight" aria-label="Página siguiente">
+      <div class="tap-icon">→</div>
+    </div>
+
     <!-- Progress Dots -->
     <div class="progress-dots" id="progressDots"></div>
 
@@ -611,6 +622,10 @@
       document.getElementById('prevBtn').addEventListener('click', prevPage);
       document.getElementById('nextBtn').addEventListener('click', nextPage);
 
+      // Mobile Tap Zones
+      document.getElementById('tapZoneLeft').addEventListener('click', prevPage);
+      document.getElementById('tapZoneRight').addEventListener('click', nextPage);
+
       // Keyboard navigation
       document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === ' ') {
@@ -718,6 +733,18 @@
       // Update nav buttons
       document.getElementById('prevBtn').disabled = currentPage <= 0;
       document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+
+      // Update tap zones visibility
+      const tapLeft = document.getElementById('tapZoneLeft');
+      const tapRight = document.getElementById('tapZoneRight');
+      
+      if (tapLeft) {
+        tapLeft.style.display = currentPage <= 0 ? 'none' : 'flex';
+      }
+      if (tapRight) {
+        // En la última página ocultamos el tap derecho
+        tapRight.style.display = currentPage >= totalPages - 1 ? 'none' : 'flex';
+      }
 
       // Update progress dots
       document.querySelectorAll('.progress-dot').forEach((dot, i) => {
