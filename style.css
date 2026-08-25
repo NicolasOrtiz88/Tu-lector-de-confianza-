@@ -21,6 +21,9 @@ body {
   background-image: 
     radial-gradient(circle at 85% 90%, rgba(55, 18, 45, 0.4) 0%, transparent 50%),
     radial-gradient(circle at 15% 10%, rgba(25, 30, 50, 0.4) 0%, transparent 50%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
   color: var(--text-main);
   font-family: var(--font-serif);
   line-height: 1.6;
@@ -459,8 +462,8 @@ body::before {
 }
 
 .seal-img {
-  width: 50px;
-  height: 50px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   opacity: 0.4;
@@ -469,7 +472,7 @@ body::before {
 }
 
 .seal-container:hover {
-  transform: translateY(-25px); /* Se asoma más */
+  transform: translateY(-50px); /* Se asoma más */
 }
 
 .seal-container:hover .seal-img {
@@ -479,7 +482,7 @@ body::before {
 
 .seal-speech {
   position: absolute;
-  bottom: 60px;
+  bottom: 130px;
   right: 50%;
   transform: translateX(50%) translateY(10px);
   background: var(--text-main);

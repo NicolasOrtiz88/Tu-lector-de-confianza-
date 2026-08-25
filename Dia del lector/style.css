@@ -1383,3 +1383,45 @@ button:focus:not(:focus-visible) {
   color: var(--text-gold);
   min-height: 2.5em;
 }
+
+/* Global Back Button */
+.back-btn {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1050;
+  background: var(--bg-card);
+  color: var(--text-cream);
+  border: 1px solid var(--bg-card-border);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s var(--ease-out);
+}
+
+.back-btn:hover {
+  background: rgba(22, 32, 22, 0.95);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* Global Footer */
+.app-footer-global {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--text-cream-muted);
+  z-index: 10;
+  background: rgba(10, 15, 10, 0.5);
+}
+

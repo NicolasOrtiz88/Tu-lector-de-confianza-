@@ -61,10 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
       starsDisplay.textContent = '✦   ✧';
     } else if (visitedCount === 1) {
       starsDisplay.textContent = '✦   ✦';
-    } else if (visitedCount === 2) {
+    } else {
       starsDisplay.textContent = '✦   ✦';
-      
-      // Reveal Unlock Section
+    }
+
+    // Reveal Unlock Section always, so she doesn't miss it
+    setTimeout(() => {
       unlockSection.classList.remove('hidden');
       
       setTimeout(() => {
@@ -82,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         document.getElementById('unlock-btn').classList.add('visible');
       }, 5500);
-    }
+    }, 6000);
 
     // Secuencia de entrada progresiva (siempre ocurre al cargar el Hub)
     setTimeout(() => {
