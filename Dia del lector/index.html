@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algo que quería decirte</title>
+  <meta name="description" content="Una pequeña historia interactiva.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+</head>
+<body>
+
+  <!-- ══════════ Sound Toggle ══════════ -->
+  <button class="sound-toggle" id="soundToggle" aria-label="Activar o desactivar sonido" title="Sonido">
+    <span id="soundIcon">🔇</span>
+  </button>
+
+  <!-- ══════════ Star Field (Intro) ══════════ -->
+  <div class="star-field" id="starField" aria-hidden="true"></div>
+
+  <!-- ══════════ Floating Petals ══════════ -->
+  <div class="petals-container" id="petalsContainer" aria-hidden="true"></div>
+
+  <!-- ══════════ Seal Peeking Easter Egg ══════════ -->
+  <div class="seal-peeking" id="sealPeeking" role="button" tabindex="0" aria-label="Una foca curiosa">
+    <img src="img/seal_peeking.jpg" alt="Una foca asomándose curiosa" loading="lazy">
+  </div>
+  <div class="seal-peeking-tooltip" id="sealPeekingTooltip" role="tooltip" aria-hidden="true"></div>
+
+  <!-- ══════════ Easter Egg Toast ══════════ -->
+  <div class="easter-egg-toast" id="easterEggToast" role="alert" aria-live="polite"></div>
+
+  <!-- ══════════ Flower Tooltip ══════════ -->
+  <div class="flower-tooltip-overlay" id="flowerOverlay"></div>
+  <div class="flower-tooltip" id="flowerTooltip" role="dialog" aria-label="Detalle de flor">
+    <p id="flowerTooltipText" class="text-body"></p>
+    <button onclick="closeFlowerTooltip()" style="margin-top: 1rem; background: none; border: 1px solid var(--text-gold-soft); color: var(--text-cream); padding: 0.5rem 1.5rem; border-radius: 100px; font-family: var(--font-serif); cursor: pointer; font-size: 0.9rem;">Cerrar</button>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       INTRO SCREEN
+       ══════════════════════════════════════════ -->
+  <div id="intro-screen">
+    <div class="intro-text" id="introText1">
+      <h1>Hay algo que quería decirte.</h1>
+    </div>
+    <div class="intro-text" id="introText2">
+      <p>Pero hacerlo de la manera normal habría sido demasiado aburrido.</p>
+    </div>
+    <div class="intro-text" id="introText3">
+      <p>Así que pensé en complicarlo un poquito.</p>
+    </div>
+    <div class="intro-btn" id="introBtn">
+      <button id="discoverBtn" type="button">Descubrir</button>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       THE BOOK
+       ══════════════════════════════════════════ -->
+  <div class="book-wrapper" id="bookWrapper">
+
+    <!-- Page Counter -->
+    <div class="page-counter" id="pageCounter">Página 1 de 14</div>
+
+    <!-- Smart Narrative Seal -->
+    <div class="seal-peeking-book" id="sealPeekingBook">
+      <img src="img/foca.jpeg" alt="Foca asomándose">
+      <div class="seal-peeking-book-tooltip" id="sealTooltip"></div>
+    </div>
+
+    <!-- The Book -->
+    <div class="book" id="book">
+
+      <!-- ═══ PAGE 1: COVER ═══ -->
+      <div class="book-page" data-page="0">
+        <div class="page-front cover-front">
+          <div class="page-content">
+            <span class="cover-ornament-top">✦ ✦ ✦</span>
+            <span class="cover-emoji">📖</span>
+            <div class="cover-divider"></div>
+            <h1 class="cover-title">Algo que quería decirte</h1>
+            <div class="cover-divider"></div>
+            <p class="cover-subtitle">Para mi lectora favorita</p>
+            <span class="cover-ornament-bottom">✦ ✦ ✦</span>
+          </div>
+          <span class="tap-hint">toca para abrir →</span>
+        </div>
+        <div class="page-back cover-back">
+          <div class="page-content">
+            <p class="text-small text-italic" style="opacity: 0.4;">La contraportada siempre es un misterio.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 2: THE CLUE ═══ -->
+      <div class="book-page" data-page="1">
+        <div class="page-front">
+          <div class="page-content">
+            <p class="text-large">¿Sabes qué tienen en común una buena historia, una canción extraña y una persona interesante?</p>
+            <div class="divider"></div>
+            <p class="text-medium text-gold">Que cuando encuentras la combinación correcta, no quieres que termine.</p>
+          </div>
+          <span class="page-number">1</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="floating-note-page right">Esto tenía que estar aquí.</p>
+          </div>
+          <span class="page-number">2</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 3: READER'S DAY ═══ -->
+      <div class="book-page" data-page="2">
+        <div class="page-front">
+          <div class="page-content">
+            <p class="text-medium">Hoy hay una excusa bastante buena para hablar de alguien que lee.</p>
+            <div class="divider"></div>
+            <p class="text-medium">Y no de cualquier persona.</p>
+            <p class="text-large text-gold mt-3">De mi lectora favorita.</p>
+            <div class="mt-3">
+              <h2 class="scene-title glow-text">Feliz Día del Lector <span class="emoji">📖</span></h2>
+            </div>
+          </div>
+          <span class="page-number">3</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="floating-note-page">No preguntes por qué.</p>
+          </div>
+          <span class="page-number">4</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 4: THE LETTER ═══ -->
+      <div class="book-page" data-page="3">
+        <div class="page-front">
+          <div class="page-content">
+            <div class="letter-card">
+              <p class="text-body"><strong>Siempre he pensado que leer dice bastante de una persona.</strong></p>
+              <p class="text-body">Porque no cualquiera tiene paciencia para quedarse dentro de una historia, hacerse preguntas y encontrar algo interesante entre líneas.</p>
+              <p class="text-body">Y supongo que por eso tenía sentido hacerte algo así.</p>
+              <p class="text-body">Feliz Día del Lector a una de mis personas favoritas para compartir palabras.</p>
+            </div>
+          </div>
+          <span class="page-number">5</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <div class="letter-card">
+              <p class="text-body">Aunque tengo que admitir algo:</p>
+              <div class="divider"></div>
+              <p class="text-medium text-gold"><strong>eres oficialmente mi lectora favorita.</strong></p>
+              <p class="text-body mt-2">No sé si exista un premio para eso.<br>Si existe, probablemente voy a inventarlo.</p>
+            </div>
+            <p class="floating-note-page right mt-3">Sí, pensé bastante esto.</p>
+          </div>
+          <span class="page-number">6</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 5: PHILOSOPHY ═══ -->
+      <div class="book-page" data-page="4">
+        <div class="page-front">
+          <div class="page-content">
+            <h3 class="text-medium text-center">Una pregunta innecesariamente filosófica</h3>
+            <div class="divider"></div>
+            <p class="text-large text-center mt-2">¿Qué hace especial a algo?</p>
+            <div class="mt-2">
+              <p class="philosophy-question">¿Que sea raro?</p>
+              <p class="philosophy-question">¿Que sea difícil de encontrar?</p>
+              <p class="philosophy-question">¿Que tenga una historia detrás?</p>
+              <p class="philosophy-question">¿O simplemente que haya alguien que lo mire de una manera diferente?</p>
+            </div>
+          </div>
+          <span class="page-number">7</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="text-body text-center">No tengo una respuesta definitiva.</p>
+            <p class="text-body text-center">Pero sí tengo una sospecha.</p>
+            <div class="divider"></div>
+            <p class="text-medium text-gold text-center mt-2">A veces lo especial no está en lo extraordinario.</p>
+            <p class="text-medium text-gold text-center">Está en quién lo hace especial.</p>
+            <p class="floating-note-page mt-3">Esta parte me gustó.</p>
+          </div>
+          <span class="page-number">8</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 6: FLOWERS ═══ -->
+      <div class="book-page" data-page="5">
+        <div class="page-front">
+          <div class="page-content">
+            <p class="text-body text-center">Y antes de que alguien aparezca con rosas...</p>
+            <p class="text-medium text-center">No.</p>
+            <p class="text-body text-center">Demasiado fácil.</p>
+            <p class="text-body text-center">Hay demasiadas flores en el mundo como para elegir siempre la misma.</p>
+
+            <div class="flowers-grid mt-2">
+              <div class="flower-card" id="sunflowerCard" role="button" tabindex="0" aria-label="Girasol — toca para descubrir más">
+                <span class="flower-emoji" aria-hidden="true">🌻</span>
+                <span class="flower-name">Girasoles</span>
+              </div>
+              <div class="flower-card" id="carnationCard" role="button" tabindex="0" aria-label="Clavel — toca para descubrir más">
+                <span class="flower-emoji" aria-hidden="true">🌺</span>
+                <span class="flower-name">Claveles</span>
+              </div>
+            </div>
+
+            <div class="page-image small">
+              <img src="img/flowers.jpg" alt="Arreglo de girasoles y claveles en acuarela" loading="lazy" id="flowersImg">
+            </div>
+          </div>
+          <span class="page-number">9</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="text-body text-center">Los girasoles porque tienen una forma bastante descarada de llamar la atención.</p>
+            <p class="text-body text-center mt-2">Y los claveles porque tienen más personalidad de la que suelen reconocerles.</p>
+            <div class="divider"></div>
+            <p class="text-medium text-gold text-center mt-2">Mucho mejor que elegir la opción predeterminada.</p>
+            <p class="floating-note-page right mt-3">Prometo que hay una explicación.</p>
+          </div>
+          <span class="page-number">10</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 7: THE SEAL ═══ -->
+      <div class="book-page" data-page="6">
+        <div class="page-front">
+          <div class="page-content">
+            <p class="text-body">Sí, también invité a una foca.</p>
+            <p class="text-body">No preguntes.</p>
+            <p class="text-body text-gold mb-2">Ella también quería participar.</p>
+
+            <div class="page-image" id="sealMainImage" role="button" tabindex="0" aria-label="La foca leyendo — toca para interactuar" style="cursor: pointer;">
+              <img src="img/foca.jpeg" alt="Foca adorable con lentes leyendo un libro llamado Ocean Tales" loading="lazy">
+            </div>
+            <span class="seal-tap-msg" id="sealTapMsg"></span>
+          </div>
+          <span class="page-number">11</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <div class="page-image small">
+              <img src="img/seal_sleeping.jpg" alt="Foca dormida sobre un libro abierto" loading="lazy" id="sleepingSealImg">
+            </div>
+            <p class="floating-note-page mt-2">Bueno... más o menos.</p>
+          </div>
+          <span class="page-number">12</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 8: STRANGE MUSIC ═══ -->
+      <div class="book-page" data-page="7">
+        <div class="page-front">
+          <div class="page-content">
+            <p class="text-body">Y hablando de cosas que no deberían funcionar...</p>
+            <p class="text-body mt-1">Hoy también se celebra algo bastante curioso.</p>
+
+            <h2 class="scene-title mt-2">Día Internacional de la Música Extraña <span class="emoji">🎵</span></h2>
+
+            <div class="music-visualizer" aria-hidden="true">
+              <div class="music-bar"></div>
+              <div class="music-bar"></div>
+              <div class="music-bar"></div>
+              <div class="music-bar"></div>
+              <div class="music-bar"></div>
+              <div class="music-bar"></div>
+              <div class="music-bar"></div>
+            </div>
+          </div>
+          <span class="page-number">13</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="text-body">La música extraña tiene algo interesante.</p>
+            <p class="text-body mt-1">Al principio piensas:</p>
+            <p class="text-medium text-italic">"¿Qué estoy escuchando?"</p>
+            <p class="text-body mt-1">Y después de un rato:</p>
+            <p class="text-medium text-italic">"Espera... ¿por qué me está gustando esto?"</p>
+            <div class="divider"></div>
+            <p class="text-body">Supongo que algunas cosas funcionan así.</p>
+            <p class="text-body">No tienen que ser completamente normales para sentirse bien.</p>
+            <p class="floating-note-page right mt-2">Esta pista era demasiado obvia.</p>
+          </div>
+          <span class="page-number">14</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 9: THE FLIRT ═══ -->
+      <div class="book-page" data-page="8">
+        <div class="page-front">
+          <div class="page-content">
+            <p class="text-medium">Quizás por eso algunas personas también terminan gustándonos.</p>
+            <p class="text-body mt-2">No porque tengan sentido.</p>
+            <p class="text-body">Sino porque tienen algo que no encuentras en cualquier parte.</p>
+            <div class="divider"></div>
+            <p class="text-body text-italic">Me dijeron que una buena lectura cambia la perspectiva.</p>
+            <p class="text-medium text-gold mt-2">Tú llevas bastante tiempo demostrando la teoría.</p>
+          </div>
+          <span class="page-number">15</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="floating-note-page">Todavía no has llegado al final.</p>
+          </div>
+          <span class="page-number">16</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 10: MICRO REVELATION ═══ -->
+      <div class="book-page" data-page="9">
+        <div class="page-front">
+          <div class="page-content">
+            <p class="text-medium">Y hablando de cosas que no son tan fáciles de encontrar...</p>
+            <div class="mt-4">
+              <p class="text-large text-gold">supongo que tú también eres un poco así.</p>
+            </div>
+            <p class="text-small mt-3">En el buen sentido.</p>
+          </div>
+          <span class="page-number">17</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="floating-note-page right">Sigue.</p>
+          </div>
+          <span class="page-number">18</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 11: CONFESSION ═══ -->
+      <div class="book-page" data-page="10">
+        <div class="page-front">
+          <div class="page-content">
+            <h3 class="text-medium text-center">Una pequeña confesión</h3>
+            <div class="divider"></div>
+            <div class="confession-card mt-2">
+              <p class="text-body">Entre tantas cosas que podía regalarte, terminé haciendo una página.</p>
+              <p class="text-body mt-1">Probablemente no era la opción más sencilla.</p>
+              <p class="text-body">Pero tampoco quería darte algo que pudiera darle a cualquiera.</p>
+            </div>
+          </div>
+          <span class="page-number">19</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="text-body">Así que pensé en las cosas que te gustan.</p>
+            <p class="text-body text-gold mt-2">Los libros.</p>
+            <p class="text-body text-gold">Las flores que no son las de siempre.</p>
+            <p class="text-body text-gold">Las focas.</p>
+            <p class="text-body text-gold">Las ideas raras.</p>
+            <p class="text-body text-gold">La música que no siempre tiene sentido.</p>
+            <div class="divider"></div>
+            <p class="text-body">Y terminé aquí.</p>
+            <p class="text-medium mt-1">Supongo que eso dice algo.</p>
+          </div>
+          <span class="page-number">20</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 12: CONFESSION IMAGE ═══ -->
+      <div class="book-page" data-page="11">
+        <div class="page-front">
+          <div class="page-content">
+            <div class="page-image small">
+              <img src="img/seal_flower.jpg" alt="Foca mirando un girasol con curiosidad" loading="lazy" id="sealFlowerImg">
+            </div>
+            <p class="floating-note-page mt-3">Casi.</p>
+          </div>
+          <span class="page-number">21</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="text-body text-italic">No sé si fue buena idea hacerte esto, porque ahora tendrás evidencia de que sí pienso en estas cosas.</p>
+            <div class="divider"></div>
+            <p class="text-body mt-1">Tenía pensado hacerlo sencillo. Claramente no salió así.</p>
+            <p class="text-medium text-gold mt-3">Supongo que algunas personas simplemente hacen que a uno le den ganas de escribir.</p>
+          </div>
+          <span class="page-number">22</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 13: FINALE ═══ -->
+      <div class="book-page" data-page="12">
+        <div class="page-front">
+          <div class="page-content">
+            <div class="page-image tiny">
+              <img src="img/foca.jpeg" alt="Foca leyendo con lentes — aprobando el regalo" loading="lazy" id="finaleSealImg">
+            </div>
+
+            <h2 class="finale-title mt-2">
+              Feliz Día del Lector, <span class="highlight">mi lectora favorita.</span>
+            </h2>
+
+            <p class="text-body">Espero que te haya gustado esta pequeña rareza.</p>
+            <p class="text-body mt-1">Porque si algo aprendí haciendo esto es que no hace falta que algo sea perfectamente normal para que sea bonito.</p>
+          </div>
+          <span class="page-number">23</span>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <p class="text-body">A veces solo necesita ser sincero.</p>
+            <p class="text-medium text-gold mt-2">Y esto lo es.</p>
+            <p class="text-body text-italic mt-3" style="color: var(--text-cream-muted);">Y sí... probablemente me gustó demasiado hacerte esto.</p>
+
+            <div class="signature mt-3">— Nicolás</div>
+            <p class="ps-note">P.D. La foca aprobó el regalo.</p>
+          </div>
+          <span class="page-number">24</span>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 14: BACK COVER ═══ -->
+      <div class="book-page" data-page="13">
+        <div class="page-front">
+          <div class="page-content">
+            <p class="floating-note-page right">Sí, llegaste. Sabía que lo harías.</p>
+            
+            <div class="reactions-container mt-4" id="reactionsContainer">
+              <h3 class="reactions-title text-medium text-center">¿Te gustó?</h3>
+              <div class="reactions-grid mt-2">
+                <button class="reaction-btn" data-reaction="like">🤍 Me gustó</button>
+                <button class="reaction-btn" data-reaction="love">🌻 Me encantó</button>
+                <button class="reaction-btn" data-reaction="seal">🦭 La foca lo aprueba</button>
+              </div>
+              <p class="reaction-response text-italic mt-3 text-center" id="reactionResponse"></p>
+            </div>
+          </div>
+          <span class="page-number">25</span>
+        </div>
+        <div class="page-back cover-back">
+          <div class="page-content">
+            <span style="font-size: 2rem; opacity: 0.3;">📖</span>
+            <p class="text-small text-italic mt-2" style="opacity: 0.4;">Fin.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /book -->
+
+    <!-- Navigation -->
+    <div class="book-nav" id="bookNav">
+      <button class="nav-btn" id="prevBtn" disabled aria-label="Página anterior">
+        <span class="arrow arrow-left">←</span> Anterior
+      </button>
+      <button class="nav-btn" id="nextBtn" aria-label="Página siguiente">
+        Siguiente <span class="arrow arrow-right">→</span>
+      </button>
+    </div>
+
+    <!-- Progress Dots -->
+    <div class="progress-dots" id="progressDots"></div>
+
+    <!-- Keyboard Hint (desktop only) -->
+    <div class="keyboard-hint" id="keyboardHint">← → usa las flechas del teclado</div>
+
+  </div><!-- /book-wrapper -->
+
+
+  <!-- ══════════════════════════════════════════
+       JAVASCRIPT
+       ══════════════════════════════════════════ -->
+  <script>
+    /* ═══════════════════════════════════════════
+       INITIALIZATION
+       ═══════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded', () => {
+      createStars();
+      createPetals();
+      initIntro();
+      initBook();
+      initFlowerInteractions();
+      initSealInteractions();
+      initSealPeeking();
+      initEasterEggs();
+      initSoundToggle();
+    });
+
+
+    /* ═══════════════════════════════════════════
+       STARS
+       ═══════════════════════════════════════════ */
+    function createStars() {
+      const field = document.getElementById('starField');
+      const count = window.innerWidth < 768 ? 40 : 70;
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = (Math.random() * 5) + 's';
+        star.style.animationDuration = (2 + Math.random() * 4) + 's';
+        star.style.width = (1 + Math.random() * 2) + 'px';
+        star.style.height = star.style.width;
+
+        // Easter egg: some stars are clickable
+        if (Math.random() > 0.85) {
+          star.classList.add('easter-star');
+          star.style.cursor = 'pointer';
+          star.style.pointerEvents = 'all';
+          star.style.width = '6px';
+          star.style.height = '6px';
+          star.addEventListener('click', () => {
+            showEasterEggToast('Encontraste algo que no necesitabas encontrar.');
+          });
+        }
+
+        field.appendChild(star);
+      }
+    }
+
+
+    /* ═══════════════════════════════════════════
+       PETALS
+       ═══════════════════════════════════════════ */
+    function createPetals() {
+      const container = document.getElementById('petalsContainer');
+      const count = window.innerWidth < 768 ? 8 : 15;
+
+      for (let i = 0; i < count; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.animationDelay = (Math.random() * 15) + 's';
+        petal.style.animationDuration = (10 + Math.random() * 15) + 's';
+        petal.style.width = (5 + Math.random() * 6) + 'px';
+        petal.style.height = (8 + Math.random() * 8) + 'px';
+        container.appendChild(petal);
+      }
+    }
+
+
+    /* ═══════════════════════════════════════════
+       INTRO SEQUENCE
+       ═══════════════════════════════════════════ */
+    function initIntro() {
+      const text1 = document.getElementById('introText1');
+      const text2 = document.getElementById('introText2');
+      const text3 = document.getElementById('introText3');
+      const btn = document.getElementById('introBtn');
+
+      setTimeout(() => text1.classList.add('visible'), 500);
+      setTimeout(() => text2.classList.add('visible'), 2200);
+      setTimeout(() => text3.classList.add('visible'), 4000);
+      setTimeout(() => btn.classList.add('visible'), 5500);
+
+      document.getElementById('discoverBtn').addEventListener('click', startExperience);
+    }
+
+    function startExperience() {
+      const intro = document.getElementById('intro-screen');
+      const bookWrapper = document.getElementById('bookWrapper');
+      const soundBtn = document.getElementById('soundToggle');
+
+      intro.classList.add('hidden');
+      bookWrapper.classList.add('active');
+
+      // Show elements after transition
+      setTimeout(() => {
+        document.getElementById('pageCounter').classList.add('visible');
+        document.getElementById('bookNav').classList.add('visible');
+        soundBtn.classList.add('visible');
+
+        // Show keyboard hint on desktop
+        if (window.innerWidth >= 768) {
+          const hint = document.getElementById('keyboardHint');
+          hint.classList.add('visible');
+          setTimeout(() => hint.classList.remove('visible'), 5000);
+        }
+      }, 800);
+    }
+
+
+    /* ═══════════════════════════════════════════
+       BOOK LOGIC
+       ═══════════════════════════════════════════ */
+    let currentPage = 0;
+    let totalPages = 0;
+    let isAnimating = false;
+    let pages = [];
+
+    function initBook() {
+      pages = document.querySelectorAll('.book-page');
+      totalPages = pages.length;
+
+      // Create progress dots
+      const dotsContainer = document.getElementById('progressDots');
+      for (let i = 0; i < totalPages; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+        dot.dataset.page = i;
+        dotsContainer.appendChild(dot);
+      }
+
+      // Set initial z-indexes
+      updatePageStack();
+      updateUI();
+
+      // Navigation buttons
+      document.getElementById('prevBtn').addEventListener('click', prevPage);
+      document.getElementById('nextBtn').addEventListener('click', nextPage);
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+          e.preventDefault();
+          nextPage();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevPage();
+        }
+      });
+
+      // Touch/swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      const book = document.getElementById('book');
+
+      book.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      book.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) {
+            nextPage();
+          } else {
+            prevPage();
+          }
+        }
+      }, { passive: true });
+
+      // Click on page to go next
+      pages.forEach((page) => {
+        page.addEventListener('click', (e) => {
+          // Don't trigger on interactive elements
+          if (e.target.closest('.flower-card, .nav-btn, button, [role="button"]')) return;
+
+          const pageIdx = parseInt(page.dataset.page);
+          if (!page.classList.contains('flipped')) {
+            nextPage();
+          }
+        });
+      });
+    }
+
+    function nextPage() {
+      if (isAnimating || currentPage >= totalPages) return;
+      isAnimating = true;
+
+      const page = pages[currentPage];
+      page.classList.add('flipped');
+
+      // Play page turn sound
+      playPageTurnSound();
+
+      currentPage++;
+      updatePageStack();
+      updateUI();
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 600);
+    }
+
+    function prevPage() {
+      if (isAnimating || currentPage <= 0) return;
+      isAnimating = true;
+
+      currentPage--;
+      const page = pages[currentPage];
+      page.classList.remove('flipped');
+
+      // Play page turn sound
+      playPageTurnSound();
+
+      updatePageStack();
+      updateUI();
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 600);
+    }
+
+    function updatePageStack() {
+      pages.forEach((page, i) => {
+        if (i < currentPage) {
+          // Flipped pages: last flipped on top
+          page.style.zIndex = i;
+        } else {
+          // Unflipped pages: first unflipped on top
+          page.style.zIndex = totalPages - i;
+        }
+      });
+    }
+
+    function updateUI() {
+      // Update page counter
+      const displayPage = Math.min(currentPage + 1, totalPages);
+      document.getElementById('pageCounter').textContent =
+        `Página ${displayPage} de ${totalPages}`;
+
+      // Update nav buttons
+      document.getElementById('prevBtn').disabled = currentPage <= 0;
+      document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+
+      // Update progress dots
+      document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+        dot.classList.remove('active', 'past');
+        if (i === currentPage) {
+          dot.classList.add('active');
+        } else if (i < currentPage) {
+          dot.classList.add('past');
+        }
+      });
+
+      // Trigger seal peeking at the right moment
+      if (currentPage >= 6) {
+        const seal = document.getElementById('sealPeeking');
+        if (!seal.classList.contains('visible')) {
+          setTimeout(() => seal.classList.add('visible'), 500);
+        }
+      }
+    }
+
+
+    /* ═══════════════════════════════════════════
+       PAGE TURN SOUND
+       ═══════════════════════════════════════════ */
+    function playPageTurnSound() {
+      if (!ambientPlaying || !audioContext) return;
+
+      try {
+        const bufferSize = audioContext.sampleRate * 0.15;
+        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+
+        for (let i = 0; i < bufferSize; i++) {
+          const t = i / bufferSize;
+          // Gentle paper rustling noise
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 15) * 0.08;
+        }
+
+        const source = audioContext.createBufferSource();
+        source.buffer = buffer;
+
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 800;
+
+        source.connect(filter);
+        filter.connect(audioContext.destination);
+        source.start();
+      } catch (e) {
+        // Silent fail
+      }
+    }
+
+
+    /* ═══════════════════════════════════════════
+       FLOWER INTERACTIONS
+       ═══════════════════════════════════════════ */
+    function initFlowerInteractions() {
+      const sunflower = document.getElementById('sunflowerCard');
+      const carnation = document.getElementById('carnationCard');
+
+      sunflower.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showFlowerTooltip('<strong>Girasoles.</strong><br><br>Tienen demasiada luz para pasar desapercibidos.');
+      });
+      sunflower.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          showFlowerTooltip('<strong>Girasoles.</strong><br><br>Tienen demasiada luz para pasar desapercibidos.');
+        }
+      });
+
+      carnation.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showFlowerTooltip('<strong>Claveles.</strong><br><br>Elegantes sin tener que presumirlo demasiado.');
+      });
+      carnation.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          showFlowerTooltip('<strong>Claveles.</strong><br><br>Elegantes sin tener que presumirlo demasiado.');
+        }
+      });
+    }
+
+    function showFlowerTooltip(html) {
+      const tooltip = document.getElementById('flowerTooltip');
+      const overlay = document.getElementById('flowerOverlay');
+      const text = document.getElementById('flowerTooltipText');
+
+      text.innerHTML = html;
+      tooltip.classList.add('active');
+      overlay.classList.add('active');
+
+      overlay.addEventListener('click', closeFlowerTooltip, { once: true });
+    }
+
+    function closeFlowerTooltip() {
+      document.getElementById('flowerTooltip').classList.remove('active');
+      document.getElementById('flowerOverlay').classList.remove('active');
+    }
+
+
+    /* ═══════════════════════════════════════════
+       SEAL INTERACTIONS
+       ═══════════════════════════════════════════ */
+    let sealTapCount = 0;
+
+    function initSealInteractions() {
+      const sealImg = document.getElementById('sealMainImage');
+      const tapMsg = document.getElementById('sealTapMsg');
+
+      const messages = [
+        'Ella sabe demasiado.',
+        'De verdad, ella no tiene nada más que decir.',
+        '...bueno, tal vez un poco más.',
+        'Ahora sí, ya no.',
+        '🤫'
+      ];
+
+      sealImg.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (sealTapCount < messages.length) {
+          tapMsg.textContent = messages[sealTapCount];
+          tapMsg.classList.add('visible');
+          sealTapCount++;
+
+          clearTimeout(sealImg._hideTimeout);
+          sealImg._hideTimeout = setTimeout(() => {
+            tapMsg.classList.remove('visible');
+          }, 3000);
+        }
+      });
+
+      sealImg.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          sealImg.click();
+        }
+      });
+    }
+
+
+    /* ═══════════════════════════════════════════
+       SEAL PEEKING (Easter Egg)
+       ═══════════════════════════════════════════ */
+    let sealPeekCount = 0;
+
+    function initSealPeeking() {
+      const seal = document.getElementById('sealPeeking');
+      const tooltip = document.getElementById('sealPeekingTooltip');
+
+      const peekMessages = [
+        'Ella sabe demasiado.',
+        'De verdad, no tiene nada más que decir.',
+        'Buena elección.',
+        '🤫'
+      ];
+
+      seal.addEventListener('click', () => {
+        if (sealPeekCount < peekMessages.length) {
+          tooltip.textContent = peekMessages[sealPeekCount];
+          tooltip.classList.add('visible');
+          sealPeekCount++;
+
+          clearTimeout(seal._tooltipTimeout);
+          seal._tooltipTimeout = setTimeout(() => {
+            tooltip.classList.remove('visible');
+          }, 3000);
+        }
+      });
+
+      seal.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          seal.click();
+        }
+      });
+    }
+
+
+    /* ═══════════════════════════════════════════
+       EASTER EGG TOASTS
+       ═══════════════════════════════════════════ */
+    let toastTimeout;
+
+    function showEasterEggToast(message) {
+      const toast = document.getElementById('easterEggToast');
+      toast.textContent = message;
+      toast.classList.add('visible');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 3500);
+    }
+
+    function initEasterEggs() {
+      // Flowers image
+      const flowersImg = document.getElementById('flowersImg');
+      if (flowersImg) {
+        flowersImg.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showEasterEggToast('Buena elección.');
+        });
+        flowersImg.style.cursor = 'pointer';
+      }
+
+      // Finale seal
+      const finaleSeal = document.getElementById('finaleSealImg');
+      if (finaleSeal) {
+        finaleSeal.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showEasterEggToast('Ella aprueba este mensaje.');
+        });
+        finaleSeal.style.cursor = 'pointer';
+      }
+
+      // Sleeping seal
+      const sleepingSeal = document.getElementById('sleepingSealImg');
+      if (sleepingSeal) {
+        sleepingSeal.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showEasterEggToast('Shhh... está descansando después de leer.');
+        });
+        sleepingSeal.style.cursor = 'pointer';
+      }
+
+      // Seal with flower
+      const sealFlower = document.getElementById('sealFlowerImg');
+      if (sealFlower) {
+        sealFlower.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showEasterEggToast('Ella también cree que los girasoles son mejor opción.');
+        });
+        sealFlower.style.cursor = 'pointer';
+      }
+    }
+
+
+    /* ═══════════════════════════════════════════
+       SOUND TOGGLE (Ambient)
+       ═══════════════════════════════════════════ */
+    let audioContext = null;
+    let ambientPlaying = false;
+    let ambientOscillators = [];
+
+    function initSoundToggle() {
+      const toggle = document.getElementById('soundToggle');
+      const icon = document.getElementById('soundIcon');
+
+      toggle.addEventListener('click', () => {
+        if (!ambientPlaying) {
+          startAmbient();
+          icon.textContent = '🔊';
+          ambientPlaying = true;
+        } else {
+          stopAmbient();
+          icon.textContent = '🔇';
+          ambientPlaying = false;
+        }
+      });
+    }
+
+    function startAmbient() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+
+      // Create gentle ambient drone
+      const frequencies = [130.81, 196.00, 261.63, 329.63];
+      const masterGain = audioContext.createGain();
+      masterGain.gain.setValueAtTime(0, audioContext.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.03, audioContext.currentTime + 2);
+      masterGain.connect(audioContext.destination);
+
+      frequencies.forEach((freq, i) => {
+        const osc = audioContext.createOscillator();
+        const oscGain = audioContext.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+        oscGain.gain.setValueAtTime(0.25 - (i * 0.05), audioContext.currentTime);
+
+        // Add very slow frequency modulation for organic feel
+        const lfo = audioContext.createOscillator();
+        const lfoGain = audioContext.createGain();
+        lfo.type = 'sine';
+        lfo.frequency.setValueAtTime(0.1 + (i * 0.05), audioContext.currentTime);
+        lfoGain.gain.setValueAtTime(0.5, audioContext.currentTime);
+        lfo.connect(lfoGain);
+        lfoGain.connect(osc.frequency);
+        lfo.start();
+
+        osc.connect(oscGain);
+        oscGain.connect(masterGain);
+        osc.start();
+
+        ambientOscillators.push({ osc, lfo, oscGain });
+      });
+
+      ambientOscillators._masterGain = masterGain;
+    }
+
+    function stopAmbient() {
+      if (ambientOscillators._masterGain) {
+        const now = audioContext.currentTime;
+        ambientOscillators._masterGain.gain.linearRampToValueAtTime(0, now + 1);
+
+        setTimeout(() => {
+          ambientOscillators.forEach(({ osc, lfo }) => {
+            osc.stop();
+            lfo.stop();
+          });
+          ambientOscillators = [];
+        }, 1200);
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       REACTIONS LOGIC
+       ═══════════════════════════════════════════ */
+    function initReactions() {
+      const btns = document.querySelectorAll('.reaction-btn');
+      const responseEl = document.getElementById('reactionResponse');
+      let hasReacted = false;
+
+      btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (hasReacted) {
+            responseEl.textContent = 'Demasiado tarde. La foca ya tomó nota.';
+            return;
+          }
+
+          hasReacted = true;
+          btns.forEach(b => b.style.opacity = '0.5');
+          btn.style.opacity = '1';
+          btn.style.borderColor = 'var(--text-gold)';
+          btn.style.color = 'var(--text-gold)';
+
+          const reaction = btn.getAttribute('data-reaction');
+          let msg = '';
+          
+          if (reaction === 'like') {
+            msg = 'Me alegra. Ya con eso valió la pena.';
+          } else if (reaction === 'love') {
+            msg = 'Bueno... entonces quizá exagerar un poquito sí funcionó.';
+          } else if (reaction === 'seal') {
+            msg = 'Sabía que ella iba a caer bien.';
+          }
+
+          responseEl.textContent = msg;
+
+          setTimeout(() => {
+            if(responseEl.textContent === msg) {
+              responseEl.textContent = 'Respuesta registrada. La foca está vigilando.';
+            }
+          }, 3500);
+        });
+      });
+    }
+
+    /* ═══════════════════════════════════════════
+       SMART SEAL MANAGER
+       ═══════════════════════════════════════════ */
+    class SealManager {
+      constructor() {
+        this.sealEl = document.getElementById('sealPeekingBook');
+        this.tooltipEl = document.getElementById('sealTooltip');
+        this.messages = [
+          "Estoy tomando apuntes.",
+          "Creo que ya estoy entendiendo.",
+          "Bueno... todavía me falta bastante.",
+          "Supongo que hay personas que dan ganas de seguir conociendo."
+        ];
+        
+        this.currentIndex = parseInt(sessionStorage.getItem('sealMessageIndex')) || 0;
+        this.isCompleted = sessionStorage.getItem('sealCompleted') === 'true';
+        this.lastAppearance = parseInt(sessionStorage.getItem('sealLastAppearance')) || Date.now();
+        
+        this.isPeeking = false;
+        
+        if (!this.isCompleted) {
+          this.scheduleNextAppearance();
+        }
+      }
+
+      scheduleNextAppearance() {
+        if (this.isCompleted) return;
+        
+        // Tiempo base de espera 20-35 segundos
+        const delay = Math.floor(Math.random() * 15000) + 20000;
+        
+        setTimeout(() => {
+          this.tryPeek();
+        }, delay);
+      }
+
+      tryPeek() {
+        // No aparecer si ya terminó, está animando el libro, o si ya está asomado
+        if (this.isCompleted || isAnimating || this.isPeeking || document.visibilityState !== 'visible') {
+          // Reintentar en 5 segundos
+          setTimeout(() => this.tryPeek(), 5000);
+          return;
+        }
+
+        // Si cambió de página muy recientemente, esperar un poco
+        const timeSinceLastPage = Date.now() - (window.lastPageTurnTime || 0);
+        if (timeSinceLastPage < 4000) {
+          setTimeout(() => this.tryPeek(), 4000);
+          return;
+        }
+
+        this.peek();
+      }
+
+      peek() {
+        this.isPeeking = true;
+        const msg = this.messages[this.currentIndex];
+        const isLast = this.currentIndex === this.messages.length - 1;
+
+        // Mostrar foca
+        this.sealEl.classList.add('visible');
+        
+        // Mostrar tooltip un poco después
+        setTimeout(() => {
+          this.tooltipEl.textContent = msg;
+          this.tooltipEl.classList.add('visible');
+        }, 800);
+
+        let hideDelay = isLast ? 6000 : 4500;
+
+        setTimeout(() => {
+          this.tooltipEl.classList.remove('visible');
+          
+          setTimeout(() => {
+            this.sealEl.classList.remove('visible');
+            this.isPeeking = false;
+            
+            // Avanzar progreso
+            this.currentIndex++;
+            sessionStorage.setItem('sealMessageIndex', this.currentIndex);
+            sessionStorage.setItem('sealLastAppearance', Date.now());
+
+            if (this.currentIndex >= this.messages.length) {
+              this.isCompleted = true;
+              sessionStorage.setItem('sealCompleted', 'true');
+              
+              // Especial para la última aparición
+              setTimeout(() => {
+                this.showFinalBookNote();
+              }, 2000);
+            } else {
+              this.scheduleNextAppearance();
+            }
+          }, 600); // Foca se esconde después de quitar el texto
+        }, hideDelay);
+      }
+
+      showFinalBookNote() {
+        // Añadir texto en la contraportada
+        const finalPageContent = document.querySelector('.page-back.cover-back .page-content');
+        if (finalPageContent) {
+          const note = document.createElement('p');
+          note.className = 'text-medium text-gold mt-3';
+          note.style.opacity = '0';
+          note.style.transition = 'opacity 1s ease';
+          note.textContent = 'Bueno... ya dije demasiado.';
+          finalPageContent.appendChild(note);
+          
+          // Trigger reflow and fade in
+          void note.offsetWidth;
+          note.style.opacity = '1';
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initReactions();
+      
+      // Override prevPage / nextPage to track time for the seal
+      const originalNextPage = nextPage;
+      nextPage = () => {
+        window.lastPageTurnTime = Date.now();
+        originalNextPage();
+      };
+      
+      const originalPrevPage = prevPage;
+      prevPage = () => {
+        window.lastPageTurnTime = Date.now();
+        originalPrevPage();
+      };
+      
+      // Inicializar el SealManager inteligente
+      window.sealManager = new SealManager();
+    });
+
+  </script>
+
+</body>
+</html>
