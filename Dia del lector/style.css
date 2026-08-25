@@ -329,8 +329,8 @@ body {
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   transition: -webkit-transform 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-  -webkit-transform-origin: center center;
-  transform-origin: center center;
+  -webkit-transform-origin: left center;
+  transform-origin: left center;
   cursor: pointer;
   z-index: 1;
 }

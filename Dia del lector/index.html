@@ -602,7 +602,39 @@
     let pages = [];
 
     function initBook() {
+      // Unfold back pages into new front pages for 1-page reading experience
+      const oldPages = document.querySelectorAll('.book-page');
+      oldPages.forEach((page) => {
+        const back = page.querySelector('.page-back');
+        if (back) {
+          const newPage = document.createElement('div');
+          newPage.className = 'book-page';
+          
+          const newFront = document.createElement('div');
+          newFront.className = 'page-front';
+          newFront.innerHTML = back.innerHTML; // Copy back content
+          
+          const emptyBack1 = document.createElement('div');
+          emptyBack1.className = 'page-back';
+          
+          newPage.appendChild(newFront);
+          newPage.appendChild(emptyBack1);
+          
+          // Insert right after the current page
+          page.parentNode.insertBefore(newPage, page.nextSibling);
+          
+          // Remove the old page-back and add an empty one
+          back.remove();
+          
+          const emptyBack2 = document.createElement('div');
+          emptyBack2.className = 'page-back';
+          page.appendChild(emptyBack2);
+        }
+      });
+
       pages = document.querySelectorAll('.book-page');
+      // Re-index data-page
+      pages.forEach((p, i) => p.dataset.page = i);
       totalPages = pages.length;
 
       // Create progress dots
